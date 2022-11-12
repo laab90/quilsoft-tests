@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_patient_details_document">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <h2 class="mt16">
+                        <span>Patient Details</span>
+                    </h2>
+
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th name="th_sequence" class="text-center">Sequence</th>
+                                <th name="th_patient" class="text-center">Name and Last Name</th>
+                                <th name="th_dni" class="text-center">DNI</th>
+                                <th name="th_status" class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="order_tbody">
+
+                            <t t-foreach="docs" t-as="doc">
+                                <tr>
+                                    <td name="td_sequence">
+                                        <span t-field="doc.name"/>
+                                    </td>
+                                    <td name="td_patient">
+                                        <span t-field="doc.patient_name"/>
+                                    </td>
+                                    <td name="td_dni">
+                                        <span t-field="doc.dni"/>
+                                    </td>
+                                    <td name="td_status">
+                                        <span t-field="doc.state"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

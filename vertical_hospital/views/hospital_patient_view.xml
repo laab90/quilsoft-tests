@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hospital_patient_view_tree" model="ir.ui.view">
+        <field name="name">hospital.patient.view.tree</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <tree string="Patient Information">
+                <field name="name" />
+                <field name="patient_name" />
+                <field name="dni" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="hospital_patient_view_form" model="ir.ui.view">
+        <field name="name">hospital.patient.view.form</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <form string="Patient Information">
+                <header>
+                    <field name="state" widget="statusbar" clickable="1" statusbar_visible="draft,start,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="patient_name" />
+                            <field name="datetime_start" />
+                        </group>
+                        <group>
+                            <field name="dni" />
+                            <field name="write_date" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="page_treatments" string="Patient Treatments">
+                            <field name="treatments_ids">
+                                <tree editable="top" create="false">
+                                    <field name="code" />
+                                    <field name="name" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="hospital_patient_view_filter" model="ir.ui.view">
+        <field name="name">hospital.patient.select</field>
+        <field name="model">hospital.patient</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Patient">
+                <field name="name" string="Sequence" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="patient_name" string="Patient"/>
+                <field name="dni" string="DNI"/>
+                <separator/>
+                    <filter name="inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Start Datetime" name="group_start_datetime" domain="[]" context="{'group_by': 'datetime_start'}"/>
+                    <filter string="Update Datetime" name="group_update_datetime" domain="[]" context="{'group_by': 'write_date'}"/>
+                    <filter string="Status" name="group_status" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_patients" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="hospital_patient_view_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="hospital_patient_view_filter"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create new Patient
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        action="action_patients"
+        id="menu_patient"
+        name="Patients"
+        parent="menu_root_hospital_management" sequence="1"
+        groups="group_hospital_managemnts_user,group_hospital_managemnts_manager"/>
+
+    
+    <!--Action Servers-->
+    <record id="model_sale_order_action_quotation_sent" model="ir.actions.server">
+        <field name="name">Print Patient Details</field>
+        <field name="model_id" ref="vertical_hospital.model_hospital_patient"/>
+        <field name="binding_model_id" ref="vertical_hospital.model_hospital_patient"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.print_patient_details()</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Root menu item -->
+    <menuitem name="Hospital Management"
+        id="menu_root_hospital_management"
+        web_icon="vertical_hospital,static/description/icon.png"
+        sequence="3"/>
+</odoo>

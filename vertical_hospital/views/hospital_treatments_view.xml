@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hospital_patient_treatments_view_tree" model="ir.ui.view">
+        <field name="name">hospital.patient.treatments.view.tree</field>
+        <field name="model">hospital.patient.treatments</field>
+        <field name="arch" type="xml">
+            <tree string="Patient Treatments">
+                <field name="name" />
+                <field name="code" />
+                <field name="doctor" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="hospital_patient_treatments_view_form" model="ir.ui.view">
+        <field name="name">hospital.patient.treatments.view.form</field>
+        <field name="model">hospital.patient.treatments</field>
+        <field name="arch" type="xml">
+            <form string="Patient Treatment">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="doctor" />
+                        </group>
+                        <group>
+                            <field name="code" />
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="hospital_patient_treatments_view_filter" model="ir.ui.view">
+        <field name="name">hospital.patient.treatments.select</field>
+        <field name="model">hospital.patient.treatments</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Patient Treatments">
+                <field name="name" string="Treatment" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="code"/>
+                <field name="doctor"/>
+                <separator/>
+                    <filter name="inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_patient_treatments" model="ir.actions.act_window">
+        <field name="name">Patient Treatments</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.patient.treatments</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="hospital_patient_treatments_view_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="hospital_patient_treatments_view_filter"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create new Patient Treatments
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        action="action_patient_treatments"
+        id="menu_patient_treatments"
+        name="Patient Treatments"
+        parent="menu_root_hospital_management" sequence="2"
+        groups="group_hospital_managemnts_user,group_hospital_managemnts_manager"/>
+
+</odoo>

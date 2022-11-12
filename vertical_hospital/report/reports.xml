@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            id="action_report_patient"
+            string="Patient Details"
+            model="hospital.patient" 
+            report_type="qweb-pdf"
+            file="vertical_hospital.report_patient_details_document" 
+            name="vertical_hospital.report_patient_details_document"
+            print_report_name="('Patient Details')"
+            menu="False"
+        />
+    </data>
+</odoo>
